@@ -1,98 +1,166 @@
 ---
-title: "Untitled"
+title: "678 Fianl Project"
 output:
-  pdf_document: 
-  latex_engine"xelatex
+  pdf_document: default
   html_document: default
+  word_document: default
 ---
 
 ```{r setup, include=FALSE}
+library(lme4)
+library(readr)
 SuperStoreOrders <- read.csv("D:/Rresources/SuperStoreOrders.csv")
-SuperStoreOrders$sales =as.numeric(SuperStoreOrders$sales)
 ```
 
-#Abstract
+## Abstract
 
-##The purpose of this study is to explore the influencing factors of sales profit of large stores, and screen out a series of factors according to difference test and correlation analysis, such as sales market, type of goods sold, sales volume, sales quantity, discount and transportation cost. Therefore, a multiple linear regression analysis model is established with sales market, type of goods sold, sales volume, sales quantity, discount and transportation cost as independent variables and sales profit as dependent variables. According to the test results of the model, sales market, type of goods sold, sales volume, sales quantity, discount and transportation cost are significant predictors of sales profit.
+The purpose of this study is to explore the influencing factors of sales profit of large stores, and screen out a series of factors through difference test and correlation analysis, such as sales market, type of goods sold, sales volume, sales quantity, discount and transportation cost. Therefore, a multiple linear regression analysis model is established with the sales market as a multi-level variable, the type of goods sold, sales volume, sales quantity, discount and transportation cost as independent variables, and the sales profit as dependent variables. According to the test results of the model, there are enough inter group differences in different sales markets, and different sales markets, types of goods sold, sales volumes, sales quantities, discounts, transportation costs and sales profits are shown. Sales markets, types of goods sold, sales volumes, sales quantities, discounts and transportation costs are important predictors of sales profits.
 
-# Introduction
+## Introduction
 
-## Operating profit is an important cornerstone for the sustainable development of an enterprise. How to obtain more profits with the minimum cost is the basis for shareholders to continue to operate the enterprise. Therefore, profit maximization is an important goal for enterprises to pursue. The main factors affecting profit include product sales quantity, sales price, fixed cost, variable cost, marginal contribution, profit and loss critical point, etc. The change of any one of these factors will cause the change of enterprise profit, even make an enterprise change from profit to loss, and also make an enterprise turn from loss to profit. In real situations, the most closely related to profits are operating revenue and operating costs. Revenue is the most important basis for generating profits. If there is not enough sales revenue as a prerequisite, then it is impossible to obtain high profits. In addition, sales costs are also extremely important factors. Costs are the loss of sales revenue. If the cost is too high, then no amount of sales revenue will be lost, Therefore, in order to obtain a higher level of profit, lower costs and higher income are undoubtedly extremely important. In addition, the sales market is also an important factor affecting sales profits. If the consumption scale of the market is small and the consumption potential is low, then the probability of the enterprise to obtain profits in this market and the scale of obtaining profits will be reduced. If the consumption scale of the market is large, the consumption potential will also be large, Then the market will bring huge profits to the sellers. In addition, the type of goods sold is also an important factor. If the added value of the goods is high, the marginal profit level that can be brought is high, so the potential for profit is greater. The sales quantity and sales revenue are very close. The sales quantity of goods and the unit price of goods sold undoubtedly constitute the sales revenue. When the unit price of goods is fixed, the higher the sales quantity of goods, the higher the sales revenue. Discount is also related to profit, but this effect is undoubtedly twofold. The proposal of discount is undoubtedly the cost of sales, which reduces the profit of the enterprise. But more importantly, discount will promote the sales of goods, increase sales volume, and further improve the sales revenue of the enterprise, thus providing an important prerequisite for obtaining a higher profit level.
+Operating profit is an important cornerstone for the sustainable development of enterprises. How to obtain more profits at the minimum cost is the basis for shareholders to continue to operate the enterprise. Therefore, profit maximization is an important goal pursued by enterprises. The main factors that affect profit include product sales quantity, sales price, fixed cost, variable cost, marginal contribution, profit and loss critical point, etc. The change of any one of these factors will lead to the change of enterprise profit, and even make the enterprise change from profit to loss, and also make the enterprise change from loss to profit. In reality, the most closely related to profits are operating income and operating costs. Revenue is the most important basis for generating profits. If there is not enough sales revenue as a prerequisite, it is impossible to obtain high profits. In addition, the cost of sales is also an extremely important factor. Cost is the loss of sales revenue. If the cost is too high, no sales revenue will be lost. Therefore, in order to obtain a higher level of profits, lower costs and higher revenues are undoubtedly extremely important. In addition, the type of goods sold is also an important factor. If the added value of goods is very high, the marginal profit level that can be brought is very high, so the profit potential is greater. The sales volume is very close to the sales revenue. The sales volume and unit price of goods sold undoubtedly constitute the sales revenue. When the unit price of goods is fixed, the higher the sales quantity of goods, the higher the sales revenue. Discount is also related to profit, but this effect is undoubtedly double. The proposal of discount is undoubtedly the cost of sales, reducing the profit of the enterprise. But more importantly, the discount will promote the sales of goods, increase the sales volume, and further improve the sales revenue of enterprises, thus providing an important prerequisite for obtaining higher profit levels. In addition, the sales market is also an important factor affecting sales profit. If the consumption scale of the market is small and the consumption potential is low, the probability and scale of enterprises to obtain profits in this market will be reduced. If the consumption scale of the market is large and the consumption potential is also large, the market will bring huge profits to sellers. More importantly, in different sales markets, there may be different profit levels, and the degree of influence of various factors on sales profits is also different.
 
-# Method
+## Method
 
-## The data set includes sales data of various products sold by stores, as well as follow-up information related to geography, product categories and subcategories, sales and profits, and segmentation between consumers. This sample dataset provides a common use case from which I can gather useful insights from sales data to improve marketing and sales strategies. I can use this sample dataset to understand the various operations and elements and come up with better strategies to improve and grow the business.
-## The method used in this study is multiple linear regression analysis, which distinguishes the independent variables and dependent variables in the study to explore the influencing factors of enterprise sales profit. In addition, this study also uses difference tests, such as analysis of variance, to select independent variables in the multiple linear regression analysis model. In addition, there is a correlation analysis method to explore the linear correlation between independent variables and dependent variables.
+The data set includes sales data of various products sold by stores, as well as follow-up information related to geography, product categories and subcategories, sales and profits, and segmentation between consumers. This sample dataset provides a common use case from which I can gather useful insights from sales data to improve marketing and sales strategies. I can use this sample dataset to understand the various operations and elements and come up with better strategies to improve and grow the business.
+
+The method used in this study is multi-level linear regression analysis. First of all, the sales market in this model is a second level variable, and in the first level variable, it distinguishes the independent variable and dependent variable in the study to explore the influencing factors of enterprise sales profit, and explores the relationship between the independent variable and dependent variable, as well as the performance of the relationship between the independent variable and dependent variable in different sales markets. In addition, this study also used ANOVA and other difference tests to select the independent variables in the multiple linear regression analysis model. In addition, there is also a correlation analysis method to explore the linear correlation between independent variables and dependent variables.
+
 
 ## Descriptive statistical analysis
-```{r}
-summary(SuperStoreOrders$profit)
-```
-## According to the results of descriptive statistical analysis of profits, the minimum value of profits is -6599.98 and the maximum value is 8399.98, which indicates that there is a large difference between the profits of all orders, with the median of 9.24 and the average of 28.64. It indicates that the overall profits of all orders are profitable.
+
+According to the results of descriptive statistical analysis of profits (Result 1, see appendix), the minimum value of profits is -6599.98 and the maximum value is 8399.98, which indicates that there is a large difference between the profits of all orders, with the median of 9.24 and the average of 28.64. It indicates that the overall profits of all orders are profitable.
 
 ```{r}
 hist(SuperStoreOrders$profit,main = "Histogram of profit")
 ```
-## According to the profit histogram, the profit distribution is mainly concentrated in the middle value, and the profit of most orders exceeds 0, that is, most orders are profitable.
 
+According to the profit histogram, the profit distribution is mainly concentrated in the middle value, and the profit of most orders exceeds 0, that is, most orders are profitable.
+
+According to the results of variance analysis (Result 2), the average order profit in Africa market is 19.375, the average order profit in APAC market is 39.773, the average order profit in Canada market is 46.399, the average order profit in EMEA market is 8.730, the average order profit in EU market is 37.283, the average order profit in LATAM market is 21.531, and the average order profit in US market is 28.657. The F statistic of the difference between the average order profit in different markets is 28.24, And this statistic has reached the significance level of 1%, so it can be considered that there are significant differences in the average order profit of at least two of the seven markets.
+
+According to the results of variance analysis (Result 3), the average order profit of Furniture is 29.038, the average order profit of Office Supplies is 16.580, and the average order profit of Techology is 65.455. The F statistic of the difference in the average profit of orders of different categories is 304.2, and this statistic reaches the significance level of 1%. Therefore, it can be considered that there are significant differences in the average order profit of at least two of the three categories.
+
+
+According to the correlation analysis results (Result 4), the correlation coefficient between order profit and sales is 0.486, and the correlation coefficient reaches a significant level of 5%. Therefore, it can be considered that there is a significant positive correlation between order profit and sales.
+
+
+According to the correlation analysis results (Result 5), the correlation coefficient between order profit and quantity is 0.105, and this correlation coefficient reaches the significance level of 5%. Therefore, it can be considered that there is a significant positive correlation between order profit and quantity.
+
+
+According to the correlation analysis results (Result 6), the correlation coefficient between order profit and quantity is 0.105, and this correlation coefficient reaches the significance level of 5%. Therefore, it can be considered that there is a significant positive correlation between order profit and quantity.
+
+According to the relevant analysis results (Result 7), it can be seen that the order profit and shipping_ The correlation coefficient of cost is 0.357, and the correlation coefficient reaches the significance level of 5%, so it can be considered that the order profit and shipping_ There is a significant positive correlation between costs.
+
+
+## Empty model
+
+
+According to the results of the empty model (Result 8), ICC's calculation result is 0.0047, that is, the 4.7% variance of the sales profit margin can be explained by the difference between groups in different markets. Therefore, it can be considered that the difference between different sales markets can be used to explain the variation of the model sales profit, although this explanation proportion is relatively low. Therefore, the multilevel linear model of this study is constructed.
+
+
+
+Compared with the empty model 0, the interpretation ability of the full model has been improved. Therefore, the full model can be used for interpretation in this study.
+
+The test results (Result 9) show that there are indeed differences between different sales markets, that is, the above variables and sales profit have different performances in different sales markets.
+
+The regression coefficient of the independent variable category office supplies is -0.009681, which reaches a significant level of 5%, indicating that the average order profit level of office supplies is significantly different from that of furniture types. Specifically, compared with the average order profit of furniture, the average order profit of the commodity category behavior of office supplies is lower.
+
+The regression coefficient of independent variable category technology is -0.003966, which reaches a significant level of 5%. This indicates that the average order profit level of category technology is significantly different from that of furniture types. Specifically, compared with the average order profit of furniture, the average order profit of category technology is lower.
+
+The regression coefficient of independent variable sales is 1.168118, which reaches the significance level of 5%, indicating that order sales can significantly and positively affect order profits. Specifically, when other variables remain unchanged, the average profit level of orders will increase by 1.168118 units as the average value of order sales increases by 1 unit.
+
+The regression coefficient of the independent variable quantity is 0.058,702, which reaches the significance level of 5%, indicating that the quantity can significantly negatively affect the profit of the order. Specifically, with other variables unchanged, the average profit level of the order will increase by 4.232e+00 units as the average quantity increases by one unit.
+
+The regression coefficient of the independent variable discount is -1.113843, and the regression coefficient reaches the significance level of 5%, which indicates that the discount can significantly and negatively affect the order profit. Specifically, with other variables unchanged, the average profit level of orders will decrease by 4.232e+00 units as the average discount value increases by one unit.
+
+Argument shipping_ The regression coefficient of cost is 0.013865, which reaches the significance level of 5%, indicating that shipping_ Cost will have a significant negative impact on order profits. Specifically, while keeping other variables unchanged, if the average cost increases by one unit, the average profit level of the order will increase by 0.013865 units.
+
+## Results
+
+This study found that the order profits of the large supermarkets investigated in this study are basically concentrated around 0, while those data points that exceed 0 are large, that is, most order profits of the large supermarkets are at the profit level. When further discussing the influencing factors of the order profit of large supermarkets, the sales market is an important stratification factor, that is, different sales markets can be used to explain the order profit of supermarkets. In all markets, the profit level brought by the EU market is very low. In addition, the type of goods is also an important factor affecting sales profit. Compared with furniture, the profit level of office supplies and technological products is higher. Sales revenue is a positive factor affecting sales profit, that is, the higher the sales revenue, the higher the sales profit. Sales volume is a negative factor affecting sales profit, that is, the higher the sales volume, the lower the sales profit. Sales discount is also a negative factor affecting sales profit. The transportation cost of sales is a negative predictor of sales revenue.
+
+## Discussion
+
+First of all, this study found that the sales market is an important factor affecting sales profit, and this factor will have a certain impact on the relationship between sales market, type of goods sold, sales volume, sales quantity, discount, transportation cost and sales profit.
+
+Secondly, this study also found that the type of goods sold is also an important factor affecting the sales profit of enterprises. The results of this study also confirmed that the higher the added value of goods, the higher the sales profit. Compared with furniture sales, the higher the added value of office supplies, especially scientific and technological products, the greater the profit space of enterprises.
+
+Third, this study also found that sales revenue is a positive factor affecting sales profit. There is no doubt about the result. Sales revenue is the premise of sales profit. Good sales revenue provides sufficient guarantee for sales profit, and also provides an important prerequisite for the improvement of profit level.
+
+Lastly, this study unexpectedly found that sales volume has become an obstacle to improve sales profit. If an enterprise's sales volume is higher, its profit level will be lower, and this result is undoubtedly contrary to the actual situation. The possible reason is that the increase of sales volume does not bring greater marginal profit, but increases the subsequent transportation cost and discount cost.
+
+Discount has become a factor hindering the improvement of profits. This result is also very strange. The results show that the discount level has a negative impact on the sales profit of enterprises, which is also predictable. The discount level is undoubtedly put forward for promotion, and the important reason for promotion is the difficulty of sales itself. Therefore, the discount in the investigation order may be to promote the goods, and the purpose is to sell the goods without considering the profit level.
+
+Transportation cost is undoubtedly a negative predictor of sales profit, which is also extremely reasonable. The increase of cost will inevitably reduce the profit level, thus reducing the profit brought by the enterprise's sales revenue.
+
+## Appendix
+
+Result 1
+```{r}
+summary(SuperStoreOrders$profit)
+```
+
+Result 2
 ```{r}
 aggregate(SuperStoreOrders$profit,by=list(SuperStoreOrders$market),mean)
 summary(aov(SuperStoreOrders$profit~SuperStoreOrders$market))
 ```
-## According to the results of variance analysis, the average order profit in Africa market is 19.375, the average order profit in APAC market is 39.773, the average order profit in Canada market is 46.399, the average order profit in EMEA market is 8.730, the average order profit in EU market is 37.283, the average order profit in LATAM market is 21.531, and the average order profit in US market is 28.657. The F statistic of the difference between the average order profit in different markets is 28.24, And this statistic has reached the significance level of 1%, so it can be considered that there are significant differences in the average order profit of at least two of the seven markets.
 
+Result 3
 ```{r}
 aggregate(SuperStoreOrders$profit,by=list(SuperStoreOrders$category),mean)
 summary(aov(SuperStoreOrders$profit~SuperStoreOrders$category))
 ```
-## According to the results of variance analysis, the average order profit of Furniture is 29.038, the average order profit of Office Supplies is 16.580, and the average order profit of Techology is 65.455. The F statistic of the difference in the average profit of orders of different categories is 304.2, and this statistic reaches the significance level of 1%. Therefore, it can be considered that there are significant differences in the average order profit of at least two of the three categories.
 
+Result 4
 ```{r}
-cor.test(SuperStoreOrders$profit,SuperStoreOrders$sales)
+cor.test(as.numeric(SuperStoreOrders$profit),as.numeric(SuperStoreOrders$sales))
 ```
-## According to the correlation analysis results, the correlation coefficient between order profit and sales is 0.486, and the correlation coefficient reaches a significant level of 5%. Therefore, it can be considered that there is a significant positive correlation between order profit and sales.
 
+Result 5
 ```{r}
 cor.test(SuperStoreOrders$profit,SuperStoreOrders$quantity)
 ```
-## According to the correlation analysis results, the correlation coefficient between order profit and quantity is 0.105, and this correlation coefficient reaches the significance level of 5%. Therefore, it can be considered that there is a significant positive correlation between order profit and quantity.
 
+Result 6
 ```{r}
 cor.test(SuperStoreOrders$profit,SuperStoreOrders$discount)
 ```
-## According to the correlation analysis results, the correlation coefficient between order profit and quantity is 0.105, and this correlation coefficient reaches the significance level of 5%. Therefore, it can be considered that there is a significant positive correlation between order profit and quantity.
 
+Result 7
 ```{r}
 cor.test(SuperStoreOrders$profit,SuperStoreOrders$shipping_cost)
 ```
-## According to the relevant analysis results, it can be seen that the order profit and shipping_ The correlation coefficient of cost is 0.357, and the correlation coefficient reaches the significance level of 5%, so it can be considered that the order profit and shipping_ There is a significant positive correlation between costs.
 
-
+Result 8
 ```{r}
-lmfit = lm(profit ~ market+category+sales+quantity+discount+shipping_cost,data=SuperStoreOrders)
-summary(lmfit)
+model0 <- lmer(profit~(1|market),data=SuperStoreOrders)
+summary(model0)
+ICC = 146.1/(146.1+30327.2)
+ICC
 ```
-## According to the goodness of fit result of the regression equation, the adjusted R-square is 0.321, which means that the variables in the equation can explain 32.1% of the order profit of the dependent variable, which means that the variables selected in this study have a good ability to explain the order profit.
-## According to the integrity test results of the regression analysis model, the F value of the integrity test statistic is 2017, and this statistic has reached the significance level of 1%, indicating that there is a significant linear relationship between independent variables and dependent variables, that is, the regression model constructed in this study is effective.
-## The regression coefficient of the independent variable marketEU is -9.520e+00, and the regression coefficient reaches a significant level of 5%, which indicates that the average order profit level of the EU market is significantly different from that of Africa market. Specifically, compared with the average order profit of Africa market, the average order profit of the EU market is lower.
-## The regression coefficient of the independent variable marketUS is 7.128e+00, and the regression coefficient reaches a significant level of 5%, which indicates that the average order profit level of the US market is significantly different from that of Africa market. Specifically, the average order profit of the US market is higher than that of Africa market.
-## The regression coefficient of the independent variable category Office Supplies is 3.333e+01, and the regression coefficient reaches a significant level of 5%, which indicates that the average order profit level of Office Supplies is significantly different from that of furniture types. Specifically, compared with the average order profit of furniture, the average order profit of the commodity category behavior Office Supplies is higher.
-## The regression coefficient of the independent variable category technology is 2.018e+01, and the regression coefficient reaches the significance level of 5%, which indicates that the average order profit level of category technology is significantly different from that of furniture type, specifically: compared with the average order profit of furniture, the average order profit of category technology is higher.
-## The regression coefficient of the independent variable sales is 1.889e-01, and the regression coefficient reaches the significance level of 5%, which indicates that the order sales can significantly and positively affect the profit of the order. Specifically, under the condition of keeping other variables constant, with the average value of the order sales increasing by one unit, the average profit level of the order will increase by 1.889e-01 units.
-## The regression coefficient of the independent variable quantity is -4.232e+00, and the regression coefficient reaches the significance level of 5%, which indicates that quantity can significantly negatively affect the profit of orders. Specifically, under the condition of keeping other variables constant, as the average value of quantity increases by one unit, the average profit level of orders will decrease by 4.232e+00 units.
-## The regression coefficient of the independent variable discount is -4.232e+00, and the regression coefficient reaches the significance level of 5%, which indicates that discount can significantly negatively affect the profit of orders. Specifically, under the condition of keeping other variables constant, as the average value of discount increases by one unit, the average profit level of orders will decrease by 4.232e+00 units.
-## Argument shipping_ The regression coefficient of cost is -1.104e-01, and the regression coefficient reaches the significance level of 5%, which indicates that shipping_ Cost can significantly and negatively affect the profit of orders. Specifically, while keeping other variables constant_ If the average cost increases by one unit, the average profit level of the order will decrease by 1.104e-01 units.
 
-# Results
+Result 9
+```{r}
+SuperStoreOrders$sales =log(as.numeric(SuperStoreOrders$sales)+1)
+SuperStoreOrders$quantity=log(SuperStoreOrders$quantity+1)
+SuperStoreOrders$discount =log(SuperStoreOrders$discount+1)
+SuperStoreOrders$shipping_cost =log(SuperStoreOrders$shipping_cost+1)
+SuperStoreOrders=na.omit(SuperStoreOrders)
+modelfull <- lmer(profit~ category + sales + quantity + discount + shipping_cost+(1|market),data=SuperStoreOrders,REML=FALSE)
+summary(modelfull)
+AIC(modelfull)
+BIC(modelfull)
+anova(model0,modelfull,REML=FALSE)
+```
 
-## This study found that the order profits of the large supermarkets investigated in this study are basically concentrated around 0, while those data points that exceed 0 are large, that is, most of the order profits of the large supermarkets are at the profit level. In further exploring the influencing factors of the order profits of the large supermarkets, the sales market is an important factor. In all markets, the profit level brought by the EU market is low. In addition, the type of goods is also an important factor affecting the sales profit. Compared with furniture, the profit level of office supplies and scientific and technological products is higher. Sales revenue is a positive factor affecting sales profit, that is, the higher the sales revenue, the higher the sales profit. The sales volume is a negative factor affecting the sales profit, that is, the higher the sales volume, the lower the sales profit. Sales discount is also a negative factor affecting sales profit. The transportation cost of sales is a negative predictor of sales revenue.
-# Discussion
-## First of all, this study found that the sales market is an important factor affecting sales profit, and this result is only shown in the difference between the average order profit level of the EU market and the African market. However, compared with the African market, the profit level of the European market is lower. This result is undoubtedly strange. The consumer income level of the African market is low, so its own consumption potential is low, However, the possible reason for this result is that the popularity of the goods sold in the African market is relatively high, and the African market has a large market scale, which can help enterprises obtain more sales orders and undoubtedly bring greater sales profits.
-## Secondly, this study also found that the type of goods sold is also an important factor affecting the sales profit of enterprises. The results of this study also confirmed that the higher the added value of goods, the higher the sales profit. Compared with furniture sales, office supplies, especially scientific and technological products, the higher the added value of goods, the greater the profit space for enterprises.
-## Thirdly, this study also found that sales revenue is a positive influence factor on sales profit. There is no doubt about this result. Sales revenue is the premise of sales profit. Good sales revenue provides sufficient guarantee for sales profit, and also provides an important premise for the improvement of profit level.
-## Thirdly, this study unexpectedly found that the sales volume has become a hindrance to the improvement of sales profit. If the sales volume of an enterprise is higher, its profit level will be lower, and this result is undoubtedly the opposite of the actual situation. The possible reason is that the increase in sales volume does not bring greater marginal profits, but increases subsequent transportation costs and discount costs.
-## Discounts have become a factor hindering the improvement of profits. This result is also strange. The research results show that the level of discounts negatively affects the sales profits of enterprises, and it is also predictable for this result. The level of discounts is undoubtedly proposed for promotion, and the important reason for promotion is the difficulty of sales itself. Therefore, the discounts in the investigated orders may be for the promotion of goods, The purpose is to sell the goods without caring about the profit level.
-##Transportation cost is undoubtedly a negative predictor of sales profit, and this result is also extremely reasonable. The increase of cost will inevitably reduce the profit level, thus reducing the profit brought by the enterprise's sales revenue.
+
+
+
+
+
+
 
 
 
